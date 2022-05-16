@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+<title>
+    {% block title %}
+        {{ post.title_tag }}
+    {% endblock %}
+</title>
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Post {{ post.pk }}</li>
+    </ol>
+</nav>  
+
+<div class="card">
+    <img class="card-img-top" src="{{ post.header_image.url }}">
+    <div class="card-body">
+      <h5 class="card-title">{{ post.title }}</h5>
+      <p class="card-text">{{ post.body|safe }}</p>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">{{ post.post_date }}</small>
+    </div>
+  </div>
+</div>
+{% if user.is_authenticated %}
+    {% if liked %}
+        <form action="{% url 'like_post' post.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm"><i class="fas fa-thumbs-up"></i> {{ total_likes }}</button>
+        </form>
+    {% else %}
+        <form action="{% url 'like_post' post.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm"><i class="far fa-thumbs-up"></i> {{ total_likes }}</button>
+        </form>
+    {% endif %}
+{% else %}
+    <form action="{% url 'login' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-sm"><i class="far fa-thumbs-up"></i> {{ total_likes }}</button>
+    </form>
+{% endif %}
+<div style="margin-left: 70%;">
+{% if user.is_authenticated %}
+{% if user.id == post.author.id %}
+<a href="{% url 'update' post.pk%}" class="btn btn-success"><i class="fas fa-pen"></i> Edit</a>
+<a href="{% url 'delete' post.pk%}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+{% endif %}
+{% endif %}
+    <a href="{% url 'home' %}" class="btn btn-danger"><i class="fas fa-home"></i> Back</a>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+<title>
+    {% block title %}
+        Home
+    {% endblock %}
+</title>
+
+{% block content %}
+<body>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">Home</li>
+    </ol>
+</nav>  
+
+<h1>Posts</h1>
+    {% for post in object_list %}
+        <div class="card" style="border: 20px; text-align: center; width: 25rem;">
+            <h3><a href="{% url 'detail' post.pk %}">{{ post.title }} </a></h3>
+            <small>By: {{ post.author.first_name }} {{post.author.last_name}}</small><br>
+            <small>Category: <a href="{% url 'category' post.category|slugify %}">{{ post.category }}</a></small><br>
+            {{ post.body|slice:":200"|safe }} <small><a href="{% url 'detail' post.pk %}">more...</a></small>
+        </div>
+        <br>
+    {% endfor %}
+</body>
+{% endblock %}

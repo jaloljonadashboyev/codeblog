@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+<title>
+    {% block title %}
+        Change blog post
+    {% endblock %}
+</title>
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user.id == post.author.id %}
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'detail' post.pk %}">Post {{ post.pk }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Post</li>
+            </ol>
+        </nav>  
+
+        <h1>Update Blog Posts</h1>
+        <div class="form-group">
+        <form action="" method="post">{% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p }}
+            <button class="btn btn-secondary">Back</button>
+            <button type="submit" class="btn btn-success"><i class="fas fa-pen"></i> Save</button>
+        </form>
+        </div>
+        {% else %}
+            <meta http-equiv="refresh" content="0; url={% url 'register' %}" />
+        {% endif %}
+{% else %}
+    <meta http-equiv="refresh" content="0; url={% url 'login' %}" />
+{% endif %}
+{% endblock %}

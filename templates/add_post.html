@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+<title>
+    {% block title %}
+        Create new blog post
+    {% endblock %}
+</title>
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add Post</li>
+        </ol>
+    </nav>  
+
+    <h1>Add Blog Posts</h1>
+    <div class="form-group">
+    <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.media}}
+        {{ form.as_p }}
+        <div>
+        <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i> Post</button>
+        </div>
+    </form>
+    </div>
+    <script>
+        var name = "{{ user.id }}";
+        document.getElementById("Behzod").value = name;
+    </script>
+{% else %}
+    <meta http-equiv="refresh" content="0; url={% url 'register' %}" />
+{% endif %}
+{% endblock %}

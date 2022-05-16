@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+<title>
+    {% block title %}
+        Create new Category
+    {% endblock %}
+</title>
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    {% if user.id == 1 %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add Category</li>
+        </ol>
+    </nav>  
+
+    <h1>Add Category</h1>
+    <div class="form-group">
+    <form action="" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <div>
+        <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i> Category</button>
+        </div>
+    </form>
+    </div>
+    {% else %}
+        <meta http-equiv="refresh" content="0; url={% url 'register' %}" />
+    {% endif %}
+{% else %}
+    <meta http-equiv="refresh" content="0; url={% url 'register' %}" />
+{% endif %}
+
+{% endblock %}

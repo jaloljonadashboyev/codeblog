@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+<title>
+    {% block title %}
+        Delete blog post
+    {% endblock %}
+</title>
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user.id == post.author.id %}
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'detail' post.pk %}">Post {{ post.pk }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Delete Post</li>
+            </ol>
+        </nav>
+        <br>
+        <h1>Delete {{ post.title }}</h1>
+        <div class="form-group">
+        <form action="" method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <h1><strong>Are you sure?</strong></h1><br>
+            <a href="{% url 'detail' post.pk%}"><button type="button" class="btn btn-secondary">Back</button></a>
+            <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button>
+        </div>
+    {% else %}
+        <meta http-equiv="refresh" content="0; url={% url 'register' %}" />
+    {% endif %}
+{% else %}
+    <meta http-equiv="refresh" content="0; url={% url 'register' %}" />
+{% endif %}
+{% endblock %}
